@@ -15,11 +15,21 @@ exports.get = (req, res) => {
     logger.info(API, ACTION, TRAN_ID, `REQUEST`)
     trackerDb.find()
         .then(trackers=>{
+            let result = []
+            for(const tracker of trackers){
+                result.push({
+                    id : tracker._id,
+                    refId : tracker.uuid,
+                    name : tracker.name,
+                    type : tracker.uuid,
+                    amount : tracker.amount
+                })
+            }
             const response = {
                 code : 'S',
                 tid : TRAN_ID,
                 description : 'Sucessfuly processed transaction',
-                data : trackers
+                data : result
             }
             logger.info(API, ACTION, TRAN_ID, `RESPONSE`, response)
             res.send(response)
@@ -181,11 +191,19 @@ exports.groupGet = (req, res) => {
     logger.info(API, ACTION, TRAN_ID, `REQUEST`)
     groupDb.find()
         .then(groups=>{
+            let result = []
+            for(const group of groups){
+                result.push({
+                    id : group._id,
+                    refId : group.uuid,
+                    name : group.name
+                })
+            }
             const response = {
                 code : 'S',
                 tid : TRAN_ID,
                 description : 'Sucessfuly processed transaction',
-                data : groups
+                data : result
             }
             logger.info(API, ACTION, TRAN_ID, `RESPONSE`, response)
             res.send(response)
@@ -313,29 +331,27 @@ exports.groupUpdate = (req,res) => {
 // get group expenses
 exports.groupExpenses = (req, res) => {
     ACTION = 'GROUP-EXPENSES'
-    //validate request
-    if(!req.body){
-        const details = `Invalid Content`
-        logger.info(API, TRAN_ID, ACTION, `RESPONSE`, details)
-        return res
-            .status(400)
-            .send({
-                code : 'F',
-                description : 'Failed to process transaction',
-                details : details
-            })
-    }
-
-    logger.info(API, TRAN_ID, ACTION, `REQUEST`, req.params.id)
+    
+    logger.info(API, TRAN_ID, ACTION, `REQUEST`, req.params.refId)
     //get group expenses
-    trackerDb.aggregate([ { $match: { "gid": req.params.id } } ])
+    trackerDb.aggregate([ { $match: { "gid": req.params.refId } } ])
         .then(expenses=>{
+            let result = []
+            for(const expense of expenses){
+                result.push({
+                    id : expense._id,
+                    refId : expense.uuid,
+                    name : expense.name,
+                    type : expense.uuid,
+                    amount : expense.amount
+                })
+            }
             const response = {
                 code : 'S',
                 tid : TRAN_ID,
                 description : 'Sucessfuly processed transaction',
-                gid : req.params.id,
-                data : expenses
+                gid : req.params.refId,
+                data : result
             }
             logger.info(API, ACTION, TRAN_ID, `RESPONSE`, response)
             res.send(response)

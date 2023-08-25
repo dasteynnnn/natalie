@@ -10,6 +10,6 @@ router.put('/update/:id', controller.update)
 router.get('/group', controller.groupGet)
 router.post('/group/create', controller.groupCreate)
 router.put('/group/update/:id', controller.groupUpdate)
-router.get('/group/expenses/:id', controller.groupExpenses)
+router.get('/group/expenses/:refId', controller.groupExpenses)
 
 module.exports = router
