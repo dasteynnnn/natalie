@@ -328,6 +328,45 @@ exports.groupUpdate = (req,res) => {
         })
 }
 
+// delete group
+exports.groupDelete = (req,res) => {
+    ACTION = 'DELETE-TRACKER-GROUP'
+    const id = req.params.id;
+    groupDb.findByIdAndDelete(id)
+        .then(data=>{
+            if(!data){
+                const details = `Cannot delete ${id}`
+                logger.error(API, TRAN_ID, ACTION, `RESPONSE`, details)
+                return res
+                    .status(404)
+                    .send({
+                        code : 'F',
+                        description : 'Failed to process transaction',
+                        details : details
+                    })
+            } else {
+                const response = {
+                    code : 'S',
+                    description : 'Sucessfuly processed transaction',
+                    details : `Successfuly deleted ${id}`
+                }
+                logger.info(API, TRAN_ID, ACTION, `RESPONSE`, response)
+                res.send(response);
+            }
+        })
+        .catch(err=>{
+            const details = err.message || 'DB Error'
+            logger.error(API, TRAN_ID, ACTION, `RESPONSE`, details)
+            return res
+                .status(500)
+                .send({
+                    code : 'F',
+                    description : 'Failed to process transaction',
+                    details : details
+                })
+        })
+}
+
 // get group expenses
 exports.groupExpenses = (req, res) => {
     ACTION = 'GROUP-EXPENSES'
