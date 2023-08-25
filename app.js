@@ -3,6 +3,8 @@ const connectDB = require('./config/database/connection')
 
 connectDB() //establish mongodb connection
 
+const app = express()
+
 // // Add headers before the routes are defined
 app.use(function (req, res, next) {
 
@@ -22,8 +24,6 @@ app.use(function (req, res, next) {
     // Pass to next layer of middleware
     next();
 });
-
-const app = express()
 
 app.use(express.json()) //middleware
 
