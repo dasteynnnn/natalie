@@ -3,16 +3,6 @@ const connectDB = require('./config/database/connection')
 
 connectDB() //establish mongodb connection
 
-const app = express()
-
-app.use(express.json()) //middleware
-
-const creditCardManagement = require('./routes/creditManagement/card')
-const budgetManagement = require('./routes/expenseManagement/tracker')
-
-app.use('/api/v1/credit/card', creditCardManagement) // credit card management v1
-app.use('/api/v1/budget/tracker', budgetManagement) // budget tracker v1
-
 // // Add headers before the routes are defined
 app.use(function (req, res, next) {
 
@@ -32,6 +22,16 @@ app.use(function (req, res, next) {
     // Pass to next layer of middleware
     next();
 });
+
+const app = express()
+
+app.use(express.json()) //middleware
+
+const creditCardManagement = require('./routes/creditManagement/card')
+const budgetManagement = require('./routes/expenseManagement/tracker')
+
+app.use('/api/v1/credit/card', creditCardManagement) // credit card management v1
+app.use('/api/v1/budget/tracker', budgetManagement) // budget tracker v1
 
 // app.use(function(req, res, next) {
 
