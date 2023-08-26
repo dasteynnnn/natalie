@@ -6,6 +6,7 @@ const controller = require('../../controller/creditManagement/card')
 //management
 router.get('/', controller.get) // get all card
 router.post('/create', controller.create) // create new card
+router.put('/update/:id', controller.update) // update card
 router.delete('/delete/:id', controller.delete) // delete card
 
 //calculate

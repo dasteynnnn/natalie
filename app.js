@@ -32,10 +32,10 @@ app.use(function (req, res, next) {
 app.use(express.json()) //middleware
 
 const creditCardManagement = require('./routes/creditManagement/card')
-const budgetManagement = require('./routes/expenseManagement/tracker')
+const expenseManagement = require('./routes/expenseManagement/tracker')
 
 app.use('/api/v1/credit/card', creditCardManagement) // credit card management v1
-app.use('/api/v1/budget/tracker', budgetManagement) // budget tracker v1
+app.use('/api/v1/expense/tracker', expenseManagement) // budget tracker v1
 
 // app.use(function(req, res, next) {
 

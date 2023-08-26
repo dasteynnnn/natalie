@@ -95,6 +95,62 @@ exports.create = (req, res) => {
         })
 }
 
+// update card
+exports.update = (req,res) => {
+    ACTION = 'UPDATE-CARD'
+    //validate request
+    if(!req.body){
+        const details = `Invalid Content`
+        logger.info(API, TRAN_ID, ACTION, `RESPONSE`, details)
+        return res
+            .status(400)
+            .send({
+                code : 'F',
+                tid : TRAN_ID,
+                description : 'Failed to process transaction',
+                details : details
+            })
+    }
+    logger.info(API, TRAN_ID, ACTION, `REQUEST`, req.body)
+    const id = req.params.id;
+    cardDb.findByIdAndUpdate(id, req.body, { useFindAndModify:false })
+        .then(data=>{
+            if(!data){
+                const details = `Cannot update ${id}`
+                logger.error(API, TRAN_ID, ACTION, `RESPONSE`, details)
+                return res
+                    .status(404)
+                    .send({
+                        code : 'F',
+                        tid : TRAN_ID,
+                        description : 'Failed to process transaction',
+                        details : details
+                    })
+            } else {
+                const response = {
+                    code : 'S',
+                    tid : TRAN_ID,
+                    description : 'Sucessfuly processed transaction',
+                    details : `Successfuly updated ${id}`
+                }
+                logger.info(API, TRAN_ID, ACTION, `RESPONSE`, response)
+                res.send(response);
+            }
+        })
+        .catch(err=>{
+            const details = err.message || 'DB Error'
+            logger.error(API, TRAN_ID, ACTION, `RESPONSE`, details)
+            return res
+                .status(500)
+                .send({
+                    code : 'F',
+                    tid : TRAN_ID,
+                    description : 'Failed to process transaction',
+                    details : details
+                })
+        })
+}
+
 //delete card
 exports.delete = (req,res) => {
     ACTION = 'DELETE-CARD'

@@ -6,6 +6,7 @@ const controller = require('../../controller/expenseManagement/tracker')
 router.get('/', controller.get)
 router.post('/create', controller.create)
 router.put('/update/:id', controller.update)
+router.delete('/delete/:id', controller.delete)
 
 router.get('/group', controller.groupGet)
 router.post('/group/create', controller.groupCreate)
