@@ -37,14 +37,6 @@ const expenseManagement = require('./routes/expenseManagement/tracker')
 app.use('/api/v1/credit/card', creditCardManagement) // credit card management v1
 app.use('/api/v1/expense/tracker', expenseManagement) // budget tracker v1
 
-// app.use(function(req, res, next) {
-
-//     res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
-
-//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//     next();
-// });
-
 const PORT = process.env.port || 2113
 app.listen(PORT, () => {
     console.log(`listening to port : ${PORT}`)
