@@ -1,4 +1,4 @@
-const API = 'BUDGETMANAGEMENT-TRACKER-1.0.0'
+const API = 'EXPENSEMANAGEMENT-TRACKER-1.0.0'
 const uuid = require('uuidv4')
 const TRAN_ID = uuid.uuid()
 const date = new Date()
@@ -22,7 +22,9 @@ exports.get = (req, res) => {
                     refId : tracker.uuid,
                     name : tracker.name,
                     type : tracker.type,
-                    amount : tracker.amount
+                    amount : tracker.amount,
+                    gid : tracker.gid
+
                 })
             }
             const response = {
@@ -59,6 +61,7 @@ exports.create = (req, res) => {
             .status(400)
             .send({
                 code : 'F',
+                tid : TRAN_ID,
                 description : 'Failed to process transaction',
                 details : details
             })
@@ -74,6 +77,7 @@ exports.create = (req, res) => {
                     .status(500)
                     .send({
                         code : 'F',
+                        tid : TRAN_ID,
                         description : 'Failed to process transaction',
                         details : message
                     })
@@ -98,6 +102,7 @@ exports.create = (req, res) => {
                 .then(data => {
                     const response = {
                         code : 'S',
+                        tid : TRAN_ID,
                         description : 'Sucessfuly processed transaction'
                     }
                     logger.info(API, TRAN_ID, ACTION, `RESPONSE`, response)
@@ -110,6 +115,7 @@ exports.create = (req, res) => {
                         .status(500)
                         .send({
                             code : 'F',
+                            tid : TRAN_ID,
                             description : 'Failed to process transaction',
                             details : details
                         })
@@ -123,6 +129,7 @@ exports.create = (req, res) => {
                 .status(500)
                 .send({
                     code : 'F',
+                    tid : TRAN_ID,
                     description : 'Failed to process transaction',
                     details : details
                 })
@@ -155,14 +162,14 @@ exports.update = (req,res) => {
                 return res
                     .status(404)
                     .send({
-                        code : 'TF',
+                        code : 'F',
                         tid : TRAN_ID,
                         description : 'Failed to process transaction',
                         details : details
                     })
             } else {
                 const response = {
-                    code : 'TS',
+                    code : 'S',
                     tid : TRAN_ID,
                     description : 'Sucessfuly processed transaction',
                     details : `Successfuly updated ${id}`
@@ -177,7 +184,7 @@ exports.update = (req,res) => {
             return res
                 .status(500)
                 .send({
-                    code : 'TF',
+                    code : 'F',
                     tid : TRAN_ID,
                     description : 'Failed to process transaction',
                     details : details
@@ -198,12 +205,14 @@ exports.delete = (req,res) => {
                     .status(404)
                     .send({
                         code : 'F',
+                        tid : TRAN_ID,
                         description : 'Failed to process transaction',
                         details : details
                     })
             } else {
                 const response = {
                     code : 'S',
+                    tid : TRAN_ID,
                     description : 'Sucessfuly processed transaction',
                     details : `Successfuly deleted ${id}`
                 }
@@ -218,6 +227,7 @@ exports.delete = (req,res) => {
                 .status(500)
                 .send({
                     code : 'F',
+                    tid : TRAN_ID,
                     description : 'Failed to process transaction',
                     details : details
                 })
@@ -337,14 +347,14 @@ exports.groupUpdate = (req,res) => {
                 return res
                     .status(404)
                     .send({
-                        code : 'TF',
+                        code : 'F',
                         tid : TRAN_ID,
                         description : 'Failed to process transaction',
                         details : details
                     })
             } else {
                 const response = {
-                    code : 'TS',
+                    code : 'S',
                     tid : TRAN_ID,
                     description : 'Sucessfuly processed transaction',
                     details : `Successfuly updated ${id}`
@@ -359,7 +369,7 @@ exports.groupUpdate = (req,res) => {
             return res
                 .status(500)
                 .send({
-                    code : 'TF',
+                    code : 'F',
                     tid : TRAN_ID,
                     description : 'Failed to process transaction',
                     details : details

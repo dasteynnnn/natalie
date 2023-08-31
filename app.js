@@ -1,19 +1,11 @@
+require('dotenv').config()
+
 const express = require('express')
 const connectDB = require('./config/database/connection')
-const { auth } = require('express-oauth2-jwt-bearer');
 
 connectDB() //establish mongodb connection
 
-const jwtCheck = auth({
-    audience: 'https://natalie-odnu.onrender.com',
-    issuerBaseURL: 'https://dev-olak38adx0yzvpf1.us.auth0.com/',
-    tokenSigningAlg: 'RS256'
-});
-
 const app = express()
-
-// enforce on all endpoints
-app.use(jwtCheck);
 
 // // Add headers before the routes are defined
 app.use(function (req, res, next) {
@@ -47,7 +39,9 @@ const expenseManagement = require('./routes/expenseManagement/tracker')
 app.use('/api/v1/credit/card', creditCardManagement) // credit card management v1
 app.use('/api/v1/expense/tracker', expenseManagement) // budget tracker v1
 
-const PORT = process.env.port || 2113
+const PORT = process.env.PORT
 app.listen(PORT, () => {
     console.log(`listening to port : ${PORT}`)
 })
+
+module.exports = app;
