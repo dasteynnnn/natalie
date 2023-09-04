@@ -67,12 +67,11 @@ exports.create = (req, res) => {
         address: req.body.address,
         email: req.body.email,
         contactNo: req.body.contactNo,
-        //avatar: req.file ? req.file.path : '',
+        avatar: req.file ? req.file.path : '',
         createDate: date,
         dateUpdated: date
     })
 
-    console.log(`file : ${req.files}`)
     //save profile to db
     profile
         .save(profile)
