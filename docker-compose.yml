@@ -1,0 +1,45 @@
+version: '3.9'
+
+services:
+  # MongoDB services
+  mongo_db:
+    container_name: db_container
+    image: mongo:latest
+    restart: always
+    ports:
+      - 2717:27017
+    volumes:
+      - mongo_db:/data/db
+
+  # nodeJS services
+  api:
+    build: .
+    ports:
+      - 3010:2113
+    volumes:
+      - .:/usr/src/app
+    environment:
+        PORT: 2113
+        DB_URL: mongodb://mongo_db:27017
+        DB_NAME: natalie
+    depends_on:
+      - mongo_db
+
+  sftp:
+    image: atmoz/sftp
+    ports:
+        - "9922:22"
+    command: foo:pass:1001:12345:/foo-home
+    networks:
+      - turreta_network     
+    volumes:
+      - sftpv:/data
+ 
+networks:
+  turreta_network:
+    driver: bridge
+
+# volume
+volumes:
+  mongo_db: {}
+  sftpv: {}

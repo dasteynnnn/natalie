@@ -2,13 +2,14 @@ const mongoose = require('mongoose');
 //const mongoConnection = `mongodb+srv://${username}:${password}@cluster0.dx6mz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 //const mongoConnection = `mongodb+srv://${username}:${password}@cluster0.dx6mz.mongodb.net/?retryWrites=true&w=majority`;
 //const mongoConnection = 'mongodb+srv://'+username+':'+password+'@cluster0.dx6mz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
-//const mongoConnection = `mongodb+srv://${username}:${password}@cluster0.dx6mz.mongodb.net/?retryWrites=true&w=majority`
+//const mongoConnection = `mongodb+srv://root:sGkMCu1c91C2s5ax@cluster0.dx6mz.mongodb.net/?retryWrites=true&w=majority`
 const mongoConnection = process.env.DB_URL
 
 const connectDB = async () => {
     try{
         //mongodb connections string
         const con = await mongoose.connect(mongoConnection, {
+            dbName: process.env.DB_NAME,
             useNewUrlParser:true,
             useUnifiedTopology:true,
             //useFindAndModify:false,

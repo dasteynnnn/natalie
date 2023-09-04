@@ -1,11 +1,11 @@
 require('dotenv').config()
 
 const express = require('express')
-const connectDB = require('./config/database/connection')
-
-connectDB() //establish mongodb connection
+const bodyParser = require('body-parser');
 
 const app = express()
+
+require('./config/database/connection')() //establish mongodb connection
 
 // // Add headers before the routes are defined
 app.use(function (req, res, next) {
@@ -31,17 +31,20 @@ app.use(function (req, res, next) {
     next();
 });
 
-app.use(express.json()) //middleware
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
 const creditCardManagement = require('./routes/creditManagement/card')
 const expenseManagement = require('./routes/expenseManagement/tracker')
+const profileManagement = require('./routes/profileManagement/profile')
 
 app.use('/api/v1/credit/card', creditCardManagement) // credit card management v1
 app.use('/api/v1/expense/tracker', expenseManagement) // budget tracker v1
+app.use('/api/v1/profile', profileManagement) // profile management v1
 
 const PORT = process.env.PORT
 app.listen(PORT, () => {
-    console.log(`listening to port : ${PORT}`)
+    console.log(`listening to ports : ${PORT}`)
 })
 
 module.exports = app;
