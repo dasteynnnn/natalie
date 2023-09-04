@@ -1,7 +1,7 @@
 require('dotenv').config()
 
 const express = require('express')
-const bodyParser = require('body-parser');
+var multipart = require('connect-multiparty');
 
 const app = express()
 
@@ -31,8 +31,7 @@ app.use(function (req, res, next) {
     next();
 });
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(multipart())
 
 const creditCardManagement = require('./routes/creditManagement/card')
 const expenseManagement = require('./routes/expenseManagement/tracker')
