@@ -139,3 +139,31 @@ exports.delete = (req,res) => {
                 })
         })
 }
+
+exports.getAvatar = (req, res) => {
+    const path = require('path')
+    let file = path.join(__dirname + "../../../"+req.body.img)
+    res.sendFile(file)
+}
+
+exports.deleteAvatar = (req, res) => {
+    const fs = require('fs')
+    const DIR = path.join(__dirname + "../../../");
+    const file = req.body.img
+    if (!file) {
+        console.log("No file received");
+        message = "Error! in image delete.";
+        return res.status(500).json('error in delete');
+    } else {
+        console.log('file received');
+        console.log(file);
+        try {
+            fs.unlinkSync(DIR+file);
+            console.log('successfully deleted ' + file);
+            return res.status(200).send('Successfully! Image has been Deleted');
+        } catch (err) {
+            // handle the error
+            return res.status(400).send(err);
+        }
+    }
+}

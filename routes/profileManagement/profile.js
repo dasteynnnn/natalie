@@ -10,4 +10,8 @@ router.post('/create', upload.single('avatar'), controller.create)
 
 router.delete('/delete/:id', controller.delete)
 
+router.post('/avatar', controller.getAvatar)
+
+router.post('/avatar/delete', controller.deleteAvatar)
+
 module.exports = router
