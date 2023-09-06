@@ -70,67 +70,25 @@ exports.create = (req, res) => {
         address: req.body.address,
         email: req.body.email,
         contactNo: req.body.contactNo,
-        //avatar: req.file ? req.file.path : '',
+        avatar: req.file ? req.file.path : '',
         createDate: date,
         dateUpdated: date
     })
 
-    let client = new Client();
-
-    const config = {
-        host: process.env.SFTP_HOST,
-        port: process.env.SFTP_PORT,
-        username: process.env.SFTP_U,
-        password: process.env.SFTP_P
-    };
-
-    // console.log(JSON.stringify(config))
-    // console.log(config)
-    // logger.info(API, TRAN_ID, ACTION, `RESPONSE`, config)
-
-    // console.log(`file : ${JSON.stringify(req.files.avatar)}`)
-    // console.log(`data : ${req.files.avatar.path}`)
-    // console.log(`ext : ${req.files.avatar.originalFilename}`)
-    // return false
-
-    let file = req.files.avatar
-    let data = fs.createReadStream(file.path);
-    let ext = path.extname(file.originalFilename) 
-    let remote = '/foo-home/' + Date.now() + ext;
-
-    client.connect(config)
-        .then(() => {
-            return client.put(data, remote);
-        })
-        .then(() => {
-            client.end()
-            //save profile to db
-            profile
-                .save(profile)
-                .then(data => {
-                    const response = {
-                        code : 'S',
-                        tid : TRAN_ID,
-                        description : 'Sucessfuly processed transaction'
-                    }
-                    logger.info(API, TRAN_ID, ACTION, `RESPONSE`, response)
-                    res.send(response);
-                })
-                .catch(err => {
-                    const details = err.message || 'DB Error'
-                    logger.error(API, TRAN_ID, ACTION, `RESPONSE`, details)
-                    return res
-                        .status(500)
-                        .send({
-                            code : 'F',
-                            tid : TRAN_ID,
-                            description : 'Failed to process transaction',
-                            details : details
-                        })
-                })
+    //save profile to db
+    profile
+        .save(profile)
+        .then(data => {
+            const response = {
+                code : 'S',
+                tid : TRAN_ID,
+                description : 'Sucessfuly processed transaction'
+            }
+            logger.info(API, TRAN_ID, ACTION, `RESPONSE`, response)
+            res.send(response);
         })
         .catch(err => {
-            const details = err.message || 'SFTP Server Connection Error'
+            const details = err.message || 'DB Error'
             logger.error(API, TRAN_ID, ACTION, `RESPONSE`, details)
             return res
                 .status(500)
@@ -140,7 +98,7 @@ exports.create = (req, res) => {
                     description : 'Failed to process transaction',
                     details : details
                 })
-        });
+        })
 }
 
 //delete profile

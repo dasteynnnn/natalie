@@ -11,7 +11,7 @@ services:
     volumes:
       - mongo_db:/data/db
     networks:
-      - service1   
+      - turreta_network     
 
   # nodeJS services
   api:
@@ -20,28 +20,21 @@ services:
       - 3010:2113
     volumes:
       - .:/usr/src/app
+      - avatars:/usr/src/app/avatars
     environment:
         PORT: 2113
         DB_URL: mongodb://mongo_db:27017
         DB_NAME: natalie
     networks:
-      - service1   
+      - turreta_network     
     depends_on:
       - mongo_db
 
-  sftp:
-    image: atmoz/sftp
-    ports:
-        - "9922:22"
-    command: ["foo:pass:::/uploads"]
-    networks:
-      - turreta_network     
- 
 networks:
   turreta_network:
     driver: bridge
-  service1:
 
 # volume
 volumes:
   mongo_db: {}
+  avatars:
