@@ -142,28 +142,46 @@ exports.delete = (req,res) => {
 
 exports.getAvatar = (req, res) => {
     const path = require('path')
-    let file = path.join(__dirname + "../../../"+req.body.img)
+    const filePath = "../../../"+req.body.img
+    let file = path.join(__dirname + filePath)
     res.sendFile(file)
 }
 
 exports.deleteAvatar = (req, res) => {
+    ACTION = 'DELETE-AVATAR'
     const fs = require('fs')
     const DIR = path.join(__dirname + "../../../");
     const file = req.body.img
     if (!file) {
         console.log("No file received");
         message = "Error! in image delete.";
-        return res.status(500).json('error in delete');
+        logger.error(API, TRAN_ID, ACTION, `RESPONSE`, message)
+        return res.status(500).json({
+            code : 'F',
+            description : 'Failed to process transaction',
+            details : message
+        });
     } else {
         console.log('file received');
         console.log(file);
         try {
             fs.unlinkSync(DIR+file);
             console.log('successfully deleted ' + file);
-            return res.status(200).send('Successfully! Image has been Deleted');
+            const response = {
+                code : 'S',
+                description : 'Sucessfuly processed transaction',
+                details : `Successfuly deleted avatar`
+            }
+            logger.info(API, TRAN_ID, ACTION, `RESPONSE`, response)
+            return res.status(200).send(response);
         } catch (err) {
+            logger.error(API, TRAN_ID, ACTION, `RESPONSE`, err)
             // handle the error
-            return res.status(400).send(err);
+            return res.status(400).send({
+                code : 'F',
+                description : 'Failed to process transaction',
+                details : err
+            });
         }
     }
 }
