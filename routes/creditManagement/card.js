@@ -12,4 +12,10 @@ router.delete('/delete/:id', controller.delete) // delete card
 //calculate
 router.get('/calculate/repayment/:id', controller.repayment)
 
+//calculate
+router.post('/calculate/repayment', controller.repayment2)
+
+//payment arrangement
+router.post('/payment/arrangement', controller.paymentArrangement)
+
 module.exports = router

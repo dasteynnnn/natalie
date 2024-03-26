@@ -37,6 +37,10 @@ var schema_card = new mongoose.Schema({
         type:Number,
         required:true
     },
+    installment: {
+        type:Boolean,
+        required:true
+    },
     createDate: {
         type:String,
         required:true
